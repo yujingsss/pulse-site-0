@@ -72,6 +72,7 @@ function newPulse(data) {
   xPos2--;
   if (xPos2 <= 0) {
     xPos2 = width;
+    background(0);
   }
 }
 

@@ -21,6 +21,7 @@ function newConnection(socket){
     function pulseMsg(data){
         // console.log("receiving:" + data);
         socket.broadcast.emit('pulse', data);
+        socket.emit('pulse', data);
         //send globally
         // socket.emit('pulse', data.clientSignal);
     }
