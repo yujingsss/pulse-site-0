@@ -1,7 +1,5 @@
-
 let serial; // variable to hold an instance of the serialport library
 // let portName = '/dev/tty.usbmodem14601'; // fill in your serial port name here
-// let portName = '0'; // fill in your serial port name here
 
 let xPos = 0;
 let xPos2 = 0;
@@ -72,13 +70,14 @@ function newPulse(data) {
   xPos2--;
   if (xPos2 <= 0) {
     xPos2 = width;
-    background(0);
+    // background(0);
   }
 }
 
 function draw() {
   textSize(20);
-  stroke(200);
+  stroke(255);
+  fill(255);
   textAlign(CENTER);
   text("serial port name: ", width / 2, 50);
 

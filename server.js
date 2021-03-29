@@ -1,4 +1,4 @@
-var express= require ('express');
+var express = require('express');
 
 var app = express();
 
@@ -12,17 +12,18 @@ app.use(express.static('public'));
 
 console.log("my socket server is running");
 
+
 io.sockets.on('connection', newConnection);
-function newConnection(socket){
+function newConnection(socket) {
     console.log("new connection: " + socket.id);
 
     socket.on('pulse', pulseMsg);
 
-    function pulseMsg(data){
+    function pulseMsg(data) {
         // console.log("receiving:" + data);
         socket.broadcast.emit('pulse', data);
-        socket.emit('pulse', data);
         //send globally
         // socket.emit('pulse', data.clientSignal);
     }
+
 }
