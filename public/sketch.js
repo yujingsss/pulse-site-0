@@ -12,6 +12,17 @@ let r, g, b;
 
 let inputSerialPort, button;
 
+//circle vis
+let circleR; //radius
+let angle
+let step //distance between steps in radians
+let inc = 10;
+let w = 0;
+let zoff = 0;
+let flowfield;
+let circleArray = [];
+let pointSize = 500;
+
 function setup() {
   // createCanvas(600, 600);
   createCanvas(windowWidth, windowHeight);
@@ -25,6 +36,20 @@ function setup() {
   r = round(random(50, 255));
   g = round(random(0, 255));
   b = round(random(0, 255));
+
+  //initialize variables
+  circleR = 160;
+  angle = 0;
+  step = TWO_PI / pointSize; //in radians equivalent of 360/6 in degrees
+  for (let i = 0; i < pointSize; i++) {
+    //convert polar coordinates to cartesian coordinates
+    var x = circleR * sin(angle);
+    var y = circleR * cos(angle);
+    //increase angle by step size
+    angle = angle + step;
+    circleArray[i] = [x, y];
+  }
+  flowfield = new Array(circleArray.length);
 
   inputSerialPort = createInput('');
   inputSerialPort.position(width / 2 - 170, 75);
@@ -74,6 +99,36 @@ function newPulse(data) {
     xPos2 = width;
     // background(0);
   }
+
+  //circle vis
+  push();
+  let w2;
+  w2 = map(data.clientSignal, 400, 800, circleR, 0)
+  translate(width / 2, height / 2);
+  let yoff = 0;
+  for (let i = 0; i < circleArray.length; i++) {
+    let xoff = 0;
+    let angle1 = noise(xoff, yoff, zoff) * 2 * PI;
+    let flow = angle1;
+    let v = p5.Vector.fromAngle(flow);
+    v.setMag(5);
+    flowfield[i] = v;
+    xoff += inc;
+    stroke(data.clientR, data.clientG, data.clientB, 40);
+    push();
+    rotate(v.heading());
+    strokeWeight(2);
+    line(circleArray[i].x, circleArray[i].y, w2, 0);
+    pop();
+    yoff += inc;
+    zoff += 0.1;
+  }
+  pop();
+}
+function otherMouse(data) {
+  // console.log(data);
+  fill(data.mouseR, data.mouseG, data.mouseB, 100);
+  rect(data.xPos, data.yPos, 8, 8);
 }
 
 function draw() {
@@ -81,9 +136,9 @@ function draw() {
   stroke(255);
   fill(255);
   textAlign(CENTER);
-  text("serial port name: ", width / 2, 50);
+  text("serial port name: ", width / 2, 30);
 
-  background(0, 0, 0, 5);
+  background(0, 0, 0, 8);
   fill(255);
   noStroke();
   ellipse(xPos, yPos, 5, 5);
@@ -92,18 +147,36 @@ function draw() {
     background(0);
     xPos = 0;
   }
+
+  //circle vis
+  push();
+  translate(width / 2, height / 2);
+  let yoff = 0;
+  for (let i = 0; i < circleArray.length; i++) {
+    let xoff = 0;
+    let angle1 = noise(xoff, yoff, zoff) * 2 * PI;
+    let flow = angle1;
+    let v = p5.Vector.fromAngle(flow);
+    v.setMag(5);
+    flowfield[i] = v;
+    xoff += inc;
+    stroke(255, 30);
+    push();
+    rotate(v.heading());
+    strokeWeight(2);
+    line(circleArray[i].x, circleArray[i].y, w, 0);
+    pop();
+    yoff += inc;
+    zoff += 0.1;
+  }
+  pop();
 }
-function otherMouse(data){
-  // console.log(data);
-  fill(data.mouseR, data.mouseG, data.mouseB);
-  rect(data.xPos, data.yPos, 8, 8);
-}
-function mouseMoved(){
-  fill(255);
-  rect(mouseX,mouseY, 8, 8);
+function mouseMoved() {
+  fill(255,100);
+  rect(mouseX, mouseY, 8, 8);
   var mouseData = {
     mouseR: r,
-    mouseG: g, 
+    mouseG: g,
     mouseB: b,
     xPos: mouseX,
     yPos: mouseY
@@ -135,6 +208,7 @@ function serialEvent() {
     const sensors = split(inString, ','); // split the string on the commas
     const pulseSignal = sensors[0];
     yPos = map(pulseSignal, 0, 1023, height, 0);
+    w = map(pulseSignal, 400, 800, circleR, 0);
 
     // console.log("sending:" + pulseSignal);
     var sensorData = {
