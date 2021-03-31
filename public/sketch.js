@@ -1,6 +1,6 @@
 let serial; // variable to hold an instance of the serialport library
 // let portName = '/dev/tty.usbmodem14601'; // fill in your serial port name here
-
+let portName;
 let xPos = 0;
 let xPos2 = 0;
 let yPos = 0;
@@ -33,6 +33,7 @@ function setup() {
   button = createButton('start');
   button.size(40);
   button.position(inputSerialPort.x + inputSerialPort.width, 75);
+  
   button.mousePressed(openSerialPort);
 
   // socket = io.connect('http://localhost:3000');
