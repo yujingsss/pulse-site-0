@@ -112,7 +112,7 @@ function newPulse(data) {
   let w2;
   w2 = map(data.clientSignal, 400, 800, circleR, 0)
   // translate(width / 2, height / 2);
-  translate(round(random(width / 6, 5 * width / 6)), height / 2);
+  translate(round(random(width / 5, 4 * width / 5)), height / 2);
   let yoff = 0;
   for (let i = 0; i < circleArray.length; i++) {
     let xoff = 0;
@@ -159,7 +159,7 @@ function draw() {
   //circle vis
   push();
   // translate(width / 2, height / 2);
-  translate(round(random(width / 6, 5 * width / 6)), height / 2);
+  translate(round(random(width / 5, 4 * width / 5)), height / 2);
   let yoff = 0;
   for (let i = 0; i < circleArray.length; i++) {
     let xoff = 0;
