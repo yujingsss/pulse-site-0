@@ -146,7 +146,7 @@ function draw() {
   // textAlign(CENTER);
   // text("Interactive Pulse ", width / 2, 50);
 
-  background(0, 0, 0, 5);
+  background(0, 0, 0, 8);
   fill(255);
   noStroke();
   ellipse(xPos, yPos, 5, 5);
