@@ -56,7 +56,7 @@ function setup() {
   flowfield = new Array(circleArray.length);
 
   inputSerialPort = createInput('');
-  inputSerialPort.position(width / 2 - 170, 75);
+  inputSerialPort.position(width/2 - 170, 75);
   inputSerialPort.size(300);
   inputSerialPort.value('/dev/tty.usbmodem14601');
   button = createButton('start');
@@ -111,7 +111,8 @@ function newPulse(data) {
   push();
   let w2;
   w2 = map(data.clientSignal, 400, 800, circleR, 0)
-  translate(width / 2, height / 2);
+  // translate(width / 2, height / 2);
+  translate(round(random(width / 6, 5 * width / 6)), height / 2);
   let yoff = 0;
   for (let i = 0; i < circleArray.length; i++) {
     let xoff = 0;
@@ -145,7 +146,7 @@ function draw() {
   // textAlign(CENTER);
   // text("Interactive Pulse ", width / 2, 50);
 
-  background(0, 0, 0, 8);
+  background(0, 0, 0, 5);
   fill(255);
   noStroke();
   ellipse(xPos, yPos, 5, 5);
@@ -157,7 +158,8 @@ function draw() {
 
   //circle vis
   push();
-  translate(width / 2, height / 2);
+  // translate(width / 2, height / 2);
+  translate(round(random(width / 6, 5 * width / 6)), height / 2);
   let yoff = 0;
   for (let i = 0; i < circleArray.length; i++) {
     let xoff = 0;
@@ -234,4 +236,10 @@ function serialError(err) {
 
 function portClose() {
   console.log('The serial port closed.');
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  inputSerialPort.position(width/2 - 170, 75);
+  button.position(inputSerialPort.x + inputSerialPort.width, 75);
 }
