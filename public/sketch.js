@@ -33,12 +33,13 @@ function setup() {
   button = createButton('start');
   button.size(40);
   button.position(inputSerialPort.x + inputSerialPort.width, 75);
-  
+
   button.mousePressed(openSerialPort);
 
   // socket = io.connect('http://localhost:3000');
   socket = io();
   socket.on('pulse', newPulse);
+  socket.on('mouse', otherMouse);
 }
 
 function keyPressed() {
@@ -91,6 +92,23 @@ function draw() {
     background(0);
     xPos = 0;
   }
+}
+function otherMouse(data){
+  // console.log(data);
+  fill(data.mouseR, data.mouseG, data.mouseB);
+  rect(data.xPos, data.yPos, 8, 8);
+}
+function mouseMoved(){
+  fill(255);
+  rect(mouseX,mouseY, 8, 8);
+  var mouseData = {
+    mouseR: r,
+    mouseG: g, 
+    mouseB: b,
+    xPos: mouseX,
+    yPos: mouseY
+  };
+  socket.emit('mouse', mouseData);
 }
 
 // get the list of ports:

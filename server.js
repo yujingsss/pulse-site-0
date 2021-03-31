@@ -26,4 +26,8 @@ function newConnection(socket) {
         // socket.emit('pulse', data.clientSignal);
     }
 
+    socket.on('mouse', mouseMsg);
+    function mouseMsg(data){
+        socket.broadcast.emit('mouse',data);
+    }
 }
