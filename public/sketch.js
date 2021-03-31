@@ -23,9 +23,11 @@ let flowfield;
 let circleArray = [];
 let pointSize = 500;
 
+let cnv;
+
 function setup() {
   // createCanvas(600, 600);
-  createCanvas(windowWidth, windowHeight);
+  cnv = createCanvas(windowWidth, windowHeight);
   background(0);
 
   yPos = height / 2;
@@ -36,6 +38,8 @@ function setup() {
   r = round(random(50, 255));
   g = round(random(0, 255));
   b = round(random(0, 255));
+
+  select('.description').position(0, 30);
 
   //initialize variables
   circleR = 160;
@@ -70,6 +74,9 @@ function setup() {
 function keyPressed() {
   if (keyCode === ENTER) {
     openSerialPort();
+  }
+  if (key === 's' || key === 'S') {
+    save(cnv, 'interactive-pulse.jpg');
   }
 }
 
@@ -132,11 +139,11 @@ function otherMouse(data) {
 }
 
 function draw() {
-  textSize(20);
-  stroke(255);
-  fill(255);
-  textAlign(CENTER);
-  text("serial port name: ", width / 2, 30);
+  // textSize(18);
+  // stroke(255);
+  // fill(255);
+  // textAlign(CENTER);
+  // text("Interactive Pulse ", width / 2, 50);
 
   background(0, 0, 0, 8);
   fill(255);
